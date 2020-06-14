@@ -1,0 +1,28 @@
+Runtime: 372 ms, faster than 5.03% of C++ online submissions for Cheapest Flights Within K Stops.
+Memory Usage: 11.3 MB, less than 60.38% of C++ online submissions for Cheapest Flights Within K Stops.
+```
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
+        unordered_map<int,vector<pair<int,int>>>mymap;
+        for(vector<int>temp :flights){
+            mymap[temp[0]].push_back(make_pair(temp[1],temp[2]));
+        }
+        int res=INT_MAX;
+        traverse(mymap,src,dst,K, 0, 0, res);
+        return res==INT_MAX?-1:res;
+    }
+    
+    void traverse(unordered_map<int,vector<pair<int,int>>>&mymap, int src, int dst, int K, int stop, int curr, int&res){
+        if(stop>K+1)return;
+        if(curr>res)return;
+        if(src==dst){
+            res=min(res,curr);
+            return ;
+        }
+        for(pair<int,int>temp : mymap[src]){
+            traverse(mymap,temp.first,dst, K, stop+1, curr+temp.second, res);
+        }
+    }
+};
+```
